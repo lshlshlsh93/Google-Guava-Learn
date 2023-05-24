@@ -11,6 +11,7 @@
 
     <modules>
         <module>guava-utils</module>
+        <module>guava-concurrency</module>
     </modules>
 
     <properties>

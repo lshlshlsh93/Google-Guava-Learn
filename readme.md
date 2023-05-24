@@ -122,3 +122,11 @@
 - US_ASCII
 
 --- 
+
+### Monitor
+
+👾 [doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/Monitor.html)
+
+- synchronized
+- reentrantLock
+- guava monitor guard
