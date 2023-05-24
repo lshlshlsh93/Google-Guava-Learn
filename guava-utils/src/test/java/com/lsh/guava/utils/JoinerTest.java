@@ -2,6 +2,7 @@ package com.lsh.guava.utils;
 
 import com.google.common.base.Joiner;
 import com.google.common.io.Files;
+import com.google.common.primitives.Ints;
 
 import org.junit.Test;
 

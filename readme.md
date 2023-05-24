@@ -37,3 +37,17 @@
 #### 8. `fixedLength` 限定长度
 
 #### 9. `on` 以何种形式分割: Pattern、Char、String
+
+---
+
+### Preconditions
+
+#### 1. `checkArgument`  校验参数，参数不符合预期抛出--`IllegalArgumentException`非法参数异常
+
+#### 2. `checkState` 校验状态，状态不符合预期抛出--`IllegalStateException`非法状态异常
+
+#### 3. `checkElementIndex` 校验元素索引,失败时抛出--`IndexOutOfBoundsException`数组下标越界异常
+
+#### 4. `checkNotNull` 校验不为空，否则抛出--`NullPointerException`空指针异常
+
+--- 
