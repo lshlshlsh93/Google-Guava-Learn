@@ -1,8 +1,12 @@
 # Guava
 
+👾 [doc](https://guava.dev/)
+
 ## utils
 
 ### Joiner
+
+👾 [doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/base/Joiner.html)
 
 #### 1. `join` 拼接集合中的元素
 
@@ -19,6 +23,8 @@
 --- 
 
 ### Splitter
+
+👾 [doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/base/Splitter.html)
 
 #### 1. `split` 分割字符串，转换为集合
 
@@ -42,6 +48,8 @@
 
 ### Preconditions
 
+👾 [doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/base/Preconditions.html)
+
 #### 1. `checkArgument`  校验参数，参数不符合预期抛出--`IllegalArgumentException`非法参数异常
 
 #### 2. `checkState` 校验状态，状态不符合预期抛出--`IllegalStateException`非法状态异常
@@ -54,6 +62,8 @@
 
 ### Objects
 
+👾 [doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/base/Objects.html)
+
 #### 1. `MoreObjects.toStringHelper` 帮助我们编写重写的toString方法
 
 #### 2. `equal` 帮助我们编写重写的equals方法
@@ -63,3 +73,52 @@
 #### 4. `ComparisonChain.start() .compare().result()` 帮助我们编写比较大小时的compareTo方法
 
 ---
+
+### Strings
+
+👾 [doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/base/Strings.html)
+
+#### 1. `emptyToNull` 将空字符串转换为null
+
+#### 2. `nullToEmpty` 将null转换为空字符串,如果不为空返回原来的值
+
+#### 3. `isNullOrEmpty` 判断字符串是否为空串或者null。为空或null返回true，否则返回false
+
+#### 4. `commonPrefix` 判断两个字符是否有公共前缀。有则返回其最长公共前缀，否则返回空串
+
+#### 5. `commonsuffix` 判断两个字符串是否有公共后缀。有则返回其最长公共后缀，否则返回空串
+
+#### 6. `repeat` 将字符串复制给定的次数 -- **Java 11+ API only**
+
+#### 7. `padStart` 判断字符串长度是否符合给定的最小长度，否则用给定的字符填充到最前面
+
+#### 7. `padEnd` 判断字符串长度是否符合给定的最小长度，否则用给定的字符填充到最后面
+
+#### 8. `String lenientFormat(String template,Object... args)` 利用args中的参数代替template中的`%s`
+
+---
+
+### CharMatcher
+
+[doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/base/CharMatcher.html)
+
+
+--- 
+
+### Charsets
+
+👾 [doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/base/Charsets.html)
+
+- UTF_8
+
+- ISO_8859_1
+
+- UTF_16
+
+- UTF_16BE
+
+- UTF_16LE
+
+- US_ASCII
+
+--- 

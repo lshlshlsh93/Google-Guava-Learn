@@ -13,6 +13,12 @@
  *
  * <p> The Objects code please see {@link com.google.common.base.Objects}</p>
  * <p> The utils of Objects will be demo by test case{@link com.lsh.guava.utils.MoreObject}</p>
+ *
+ * <p> The Strings code please see {@link com.google.common.base.Strings}</p>
+ * <p> The utils of Strings will be demo by test case{@link StringsTest}</p>
+ *
+ * <p> The Strings code please see {@link com.google.common.base.CharMatcher}</p>
+ * <p> The utils of Strings will be demo by test case{@link CharMatcherTest}</p>
  * </div>
  */
 package com.lsh.guava.utils;
