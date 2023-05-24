@@ -51,3 +51,15 @@
 #### 4. `checkNotNull` 校验不为空，否则抛出--`NullPointerException`空指针异常
 
 --- 
+
+### Objects
+
+#### 1. `MoreObjects.toStringHelper` 帮助我们编写重写的toString方法
+
+#### 2. `equal` 帮助我们编写重写的equals方法
+
+#### 3. `hashCode` 帮助我们编写重写的hashcode方法
+
+#### 4. `ComparisonChain.start() .compare().result()` 帮助我们编写比较大小时的compareTo方法
+
+---

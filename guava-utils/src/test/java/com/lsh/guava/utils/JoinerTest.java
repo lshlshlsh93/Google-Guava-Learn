@@ -1,6 +1,8 @@
 package com.lsh.guava.utils;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.google.common.io.Files;
 import com.google.common.primitives.Ints;
 
@@ -55,7 +57,9 @@ public class JoinerTest {
     public void testJoinerOnJoin_WithNullValue_But_Skip() {
         String result = Joiner.on("#").skipNulls().join(STRING_LIST_WITH_NULL_VALUE);
         assertThat(result, equalTo("Guava#Scale#Kafka"));
+
     }
+
 
 
     @Test
