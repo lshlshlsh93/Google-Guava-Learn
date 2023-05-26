@@ -127,6 +127,171 @@
 
 👾 [doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/Monitor.html)
 
-- synchronized
-- reentrantLock
 - guava monitor guard
+
+```java
+
+public class GuavaMonitorDemo<V> {
+
+    private final LinkedList<V> queue;
+
+    private final int max;
+
+    private final Monitor monitor = new Monitor();
+    ;
+
+    private final Monitor.Guard CAN_OFFER;
+
+    private final Monitor.Guard CAN_TAKE;
+
+    public GuavaMonitorDemo(int max) {
+        this.queue = new LinkedList<>();
+        this.max = max;
+        CAN_OFFER = monitor.newGuard(() -> queue.size() < this.max);
+        CAN_TAKE = monitor.newGuard(() -> !queue.isEmpty());
+    }
+
+    public void offer(V v) {
+        try {
+            // when can offer then enter
+            monitor.enterWhen(CAN_OFFER);
+            // add value
+            queue.addLast(v);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            // leave
+            monitor.leave();
+        }
+    }
+
+    public V take() {
+        V v;
+        try {
+            // when can take then enter
+            monitor.enterWhen(CAN_TAKE);
+            v = queue.removeFirst();
+            return v;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // leave when do thing over
+            monitor.leave();
+        }
+    }
+}
+
+```
+
+- reentrantLock
+
+```java
+
+public class ReentrantLockDemo<V> {
+
+    private final ReentrantLock LOCK = new ReentrantLock();
+
+    // full condition
+    private final Condition FULL_CONDITION = LOCK.newCondition();
+    // empty condition
+    private final Condition EMPTY_CONDITION = LOCK.newCondition();
+    // queue
+    private final LinkedList<V> queue;
+    // max
+    private final int max;
+
+    public ReentrantLockDemo(int max) {
+        this.queue = new LinkedList<>();
+        this.max = max;
+    }
+
+    public void put(V v) {
+        try {
+            LOCK.lock();
+            while (queue.size() >= max) {
+                FULL_CONDITION.await();
+            }
+            queue.addLast(v);
+            EMPTY_CONDITION.signalAll();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            LOCK.unlock();
+        }
+    }
+
+    public V get() {
+        V v;
+        try {
+            LOCK.lock();
+            while (queue.isEmpty()) {
+                EMPTY_CONDITION.await();
+            }
+            v = queue.removeFirst();
+            FULL_CONDITION.signalAll();
+            return v;
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            LOCK.unlock();
+        }
+    }
+}
+
+```
+
+- synchronized
+
+```java
+public class SynchronizedDemo<V> {
+
+    private final LinkedList<V> queue;
+
+    private final int max;
+
+    public SynchronizedDemo(int max) {
+        this.max = max;
+        this.queue = new LinkedList<>();
+    }
+
+    public void put(V v) {
+        synchronized (queue) {
+            while (queue.size() >= max) {
+                try {
+                    queue.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            queue.addLast(v);
+            queue.notifyAll();
+        }
+    }
+
+    public V get() {
+        V v;
+        synchronized (queue) {
+            while (queue.isEmpty()) {
+                try {
+                    queue.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            v = queue.removeFirst();
+            queue.notifyAll();
+            return v;
+        }
+    }
+}
+
+
+```
+
+--- 
+
+### RateLimiter 限流
+
+[👾doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/TimeLimiter.html)
+
+Google的Guava的限流策略是使用的令牌桶算法
