@@ -295,3 +295,155 @@ public class SynchronizedDemo<V> {
 [👾doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/util/concurrent/TimeLimiter.html)
 
 Google的Guava的限流策略是使用的令牌桶算法
+
+### IO
+
+[👾doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/io/package-summary.html)
+
+#### Files
+
+- `copy` 将source文件内容拷贝到target文件中
+
+- `move` 将source文件内容移动到target文件中
+
+- `readLines` 将source文件内容读取到List中
+
+- `asCharSink(File file, Charset charset).write(String content)` 将content文件内容写入到文件中
+
+- `asCharSink(File file, Charset charset, FileWriteMode... modes).write(String content)`
+  将content文件内容append到文件中（非覆盖）
+
+- `touch` touch方法类似于Linux的touch指令，创建一个空文件或者更新它的最近更新时间
+
+- `fileTraverser` 文件递归遍历
+
+#### CharSource
+
+- `wrap` 根据给定的字符集构造一个CharSource
+
+- `read` 以字符串形式读取内容
+
+- `readFirstLine` 以字符串形式读取第一行内容
+
+- `readLines` 以字符串形式读取所有行内容
+
+- `readLines(LineProcessor<T> processor)` 以字符串形式读取所有行内容，可以在读取过程中进行处理操作
+
+- `length`  获取长度
+
+- `isEmpty` 判断是否为空,同静态方法`empty`
+
+- `asByteSource` 将字符流转换为字节流
+
+- `concat` 连接可变个CharSource
+
+--- 
+
+#### ByteSource
+
+- `wrap` 根据给定的字节数组构造一个ByteSource
+
+- `asCharSource` 将ByteSource转换为CharSource
+
+- `read` 读取ByteSource作为一个字节数组
+
+- `size`  获取大小
+
+- `isEmpty` 判断是否为空,同静态方法`empty`
+
+- `concat` 将多个ByteSource连接为一个ByteSource
+
+---
+
+#### Closer
+
+- `create` 创建一个closer
+- `rethrow` 存储抛出的java.lang.Throwable，然后重新抛出
+
+---
+
+### BaseEncoding
+- `base64` Base 64 Encoding
+
+custom Base64
+```java
+public final class Base64 {
+
+    private static final String CODE_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
+
+    private static final char[] CODE_DICT = CODE_STRING.toCharArray();
+
+    private Base64() {
+    }
+
+    public static String encode(String plain) {
+        Preconditions.checkNotNull(plain);
+        StringBuilder result = new StringBuilder();
+        String binaryStr = toBinary(plain);
+        int delta = 6 - binaryStr.length() % 6;
+        for (int i = 0; i < delta && delta != 6; i++) {
+            binaryStr += "0";
+        }
+        for (int j = 0; j < binaryStr.length() / 6; j++) {
+            int begin = j * 6;
+            String encodeStr = binaryStr.substring(begin, begin + 6);
+            char encodeChar = CODE_DICT[Integer.valueOf(encodeStr, 2)];
+            result.append(encodeChar);
+        }
+        if (delta != 6) {
+            for (int j = 0; j < delta / 2; j++) {
+                result.append("=");
+            }
+        }
+        return result.toString();
+    }
+
+
+    public static String decode(final String encrypt) {
+        StringBuilder resultBuilder = new StringBuilder();
+        String tmp = encrypt;
+        int equalIndex = tmp.indexOf("=");
+        if (equalIndex > 0) {
+            tmp = tmp.substring(0, equalIndex);
+        }
+        String base64Binary = toBase64Binary(tmp);
+        for (int j = 0; j < base64Binary.length() / 8; j++) {
+            int begin = j * 8;
+            String str = base64Binary.substring(begin, begin + 8);
+            char c = Character.toChars(Integer.valueOf(str, 2))[0];
+            resultBuilder.append(c);
+        }
+        return resultBuilder.toString();
+    }
+
+
+    private static String toBinary(final String source) {
+        final StringBuilder binaryResult = new StringBuilder();
+        for (int index = 0; index < source.length(); index++) {
+            String charBin = Integer.toBinaryString(source.charAt(index));
+            int delta = 8 - charBin.length();
+            for (int d = 0; d < delta; d++)
+                charBin = "0" + charBin;
+            binaryResult.append(charBin);
+        }
+        return binaryResult.toString();
+    }
+
+
+    private static String toBase64Binary(final String source) {
+        final StringBuilder binaryResult = new StringBuilder();
+        for (int index = 0; index < source.length(); index++) {
+            int i = CODE_STRING.indexOf(source.charAt(index));
+            String charBinary = Integer.toBinaryString(i);
+            int delta = 6 - charBinary.length();
+            for (int d = 0; d < delta; d++) {
+                charBinary = "0" + charBinary;
+            }
+            binaryResult.append(charBinary);
+        }
+        return binaryResult.toString();
+    }
+    
+}
+
+```

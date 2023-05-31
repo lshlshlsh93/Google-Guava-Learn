@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="guava-utils" />
         <module name="guava-concurrency" />
+        <module name="guava-io" />
       </profile>
     </annotationProcessing>
   </component>

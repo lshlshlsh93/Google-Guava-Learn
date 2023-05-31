@@ -12,6 +12,7 @@
     <modules>
         <module>guava-utils</module>
         <module>guava-concurrency</module>
+        <module>guava-io</module>
     </modules>
 
     <properties>
@@ -34,8 +35,6 @@
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
 
 
