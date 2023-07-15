@@ -13,6 +13,8 @@
         <module>guava-utils</module>
         <module>guava-concurrency</module>
         <module>guava-io</module>
+        <module>guava-eventbus</module>
+        <module>guava-cache</module>
     </modules>
 
     <properties>
@@ -34,6 +36,13 @@
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
         </dependency>
     </dependencies>
 

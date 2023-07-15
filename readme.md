@@ -296,7 +296,7 @@ public class SynchronizedDemo<V> {
 
 Google的Guava的限流策略是使用的令牌桶算法
 
-### IO
+## IO
 
 [👾doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/io/package-summary.html)
 
@@ -363,9 +363,11 @@ Google的Guava的限流策略是使用的令牌桶算法
 ---
 
 ### BaseEncoding
+
 - `base64` Base 64 Encoding
 
-custom Base64
+### custom Base64
+
 ```java
 public final class Base64 {
 
@@ -443,7 +445,257 @@ public final class Base64 {
         }
         return binaryResult.toString();
     }
-    
+
 }
 
+```
+
+## Cache
+
+In Memory
+
+- old
+    - osCache
+    - SwarmCache
+    - EhCache
+- new
+    - redis
+    - memcache
+    - zookeeper Apache commons
+    - JCU
+
+### LRU算法(最近最小使用)
+
+- Interface
+
+```java
+public interface LRUCache<K, V> {
+
+    /**
+     *  put element into the container
+     * @param key key
+     * @param value value
+     */
+    void put(K key, V value);
+
+    /**
+     * get element from the container
+     * @param key key
+     * @return element
+     */
+    V get(K key);
+
+    /**
+     * remove element from the container
+     * @param key key
+     */
+    void remove(K key);
+
+    /**
+     * return the size
+     */
+    int size();
+
+    /**
+     * clear all element
+     */
+    void clear();
+
+    /**
+     * the limit size of container
+     */
+    int limit();
+
+}
+```
+
+#### 实现方式一：使用LinkedHashMap
+
+- Implement
+
+```java
+/**
+ * This class is not the thread-safe class.
+ *
+ * @param <K>
+ * @param <V>
+ */
+public class LinkedHashLRUCache<K, V> implements LRUCache<K, V> {
+
+    private final int limit;
+
+    private final InternalLRUCache<K, V> internalLRUCache;
+
+    public LinkedHashLRUCache(int limit) {
+        Preconditions.checkArgument(limit > 0, "The limit should bigger than zero.");
+        this.limit = limit;
+        this.internalLRUCache = new InternalLRUCache<>(limit);
+    }
+
+    @Override
+    public void put(K key, V value) {
+        this.internalLRUCache.put(key, value);
+    }
+
+    @Override
+    public V get(K key) {
+        return this.internalLRUCache.get(key);
+    }
+
+    @Override
+    public void remove(K key) {
+        this.internalLRUCache.remove(key);
+    }
+
+    @Override
+    public int size() {
+        return this.internalLRUCache.size();
+    }
+
+    @Override
+    public void clear() {
+        this.internalLRUCache.clear();
+    }
+
+    @Override
+    public int limit() {
+        return this.limit;
+    }
+
+    @Override
+    public String toString() {
+        return internalLRUCache.toString();
+    }
+
+    private static class InternalLRUCache<K, V> extends LinkedHashMap<K, V> {
+        private final int limit;
+
+        public InternalLRUCache(int limit) {
+            super(16, 0.75f, true);
+            this.limit = limit;
+        }
+
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
+            return size() > limit;
+        }
+    }
+}
+```
+
+- Test
+
+```java
+public class LinkedHashLRUCacheClient {
+    public static void main(String[] args) {
+        LRUCache<String, String> stringLRUCache = new LinkedHashLRUCache<>(3);
+        stringLRUCache.put("1", "1");
+        stringLRUCache.put("2", "2");
+        stringLRUCache.put("3", "3");
+        System.out.println(stringLRUCache); // {1=1, 2=2, 3=3}
+        stringLRUCache.put("4", "4");
+        System.out.println(stringLRUCache); // {2=2, 3=3, 4=4}
+        System.out.println(stringLRUCache.get("2")); // 2
+        System.out.println(stringLRUCache); // {3=3, 4=4, 2=2}
+    }
+}
+```
+
+#### 实现方式二：使用LinkedList + HashMap
+
+```java
+/**
+ * This class is not the thread-safe class.
+ *
+ * @param <K>
+ * @param <V>
+ *
+ */
+public class LinkedListLRUCache<K, V> implements LRUCache<K, V> {
+
+    private final int limit;
+
+    private final LinkedList<K> keys = new LinkedList<>();
+
+    private final Map<K, V> cache = new HashMap<>();
+
+    public LinkedListLRUCache(int limit) {
+        this.limit = limit;
+    }
+
+
+    @Override
+    public void put(K key, V value) {
+        Preconditions.checkNotNull(key);
+        Preconditions.checkNotNull(value);
+        if (keys.size() >= limit) {
+            // if size >= limit, remove the head element
+            K oldKey = keys.removeFirst();
+            // remove from the map
+            cache.remove(oldKey);
+        }
+        keys.addLast(key);
+        cache.put(key, value);
+    }
+
+    @Override
+    public V get(K key) {
+        // judge whether remove success, if success then exist is true,otherwise is false.
+        boolean exist = keys.remove(key);
+        if (!exist) {
+            return null;
+        }
+        keys.addLast(key);
+        return cache.get(key);
+    }
+
+    @Override
+    public void remove(K key) {
+        keys.remove(key);
+    }
+
+    @Override
+    public int size() {
+        return keys.size();
+    }
+
+    @Override
+    public void clear() {
+        this.keys.clear();
+        this.cache.clear();
+    }
+
+    @Override
+    public int limit() {
+        return this.limit;
+    }
+
+    @Override
+    public String toString() {
+
+        StringBuilder builder = new StringBuilder();
+        for (K k : keys) {
+            builder.append(k).append("=").append(cache.get(k)).append(";");
+        }
+        return builder.toString();
+    }
+}
+```
+
+- Test
+
+```java
+public class LinkedListLRUCacheClient {
+    public static void main(String[] args) {
+        LRUCache<String, String> stringLRUCache = new LinkedListLRUCache<>(3);
+        stringLRUCache.put("1", "1");
+        stringLRUCache.put("2", "2");
+        stringLRUCache.put("3", "3");
+        System.out.println(stringLRUCache); // {1=1, 2=2, 3=3}
+        stringLRUCache.put("4", "4");
+        System.out.println(stringLRUCache); // {2=2, 3=3, 4=4}
+        System.out.println(stringLRUCache.get("2")); // 2
+        System.out.println(stringLRUCache); // {3=3, 4=4, 2=2}
+    }
+}
 ```

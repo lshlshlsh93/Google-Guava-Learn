@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>guava-utils</artifactId>
+    <artifactId>guava-cache</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
