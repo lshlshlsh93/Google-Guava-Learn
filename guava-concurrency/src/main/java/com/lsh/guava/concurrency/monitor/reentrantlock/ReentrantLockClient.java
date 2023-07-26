@@ -9,7 +9,6 @@ import java.util.stream.IntStream;
  * @Author lishaohui
  * @Date 2023/5/24 22:34
  */
-@SuppressWarnings("all")
 public class ReentrantLockClient {
 
     public static void main(String[] args) {

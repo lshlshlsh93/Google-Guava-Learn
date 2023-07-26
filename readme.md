@@ -699,3 +699,78 @@ public class LinkedListLRUCacheClient {
     }
 }
 ```
+
+## collect
+
+[👾doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/package-summary.html)
+
+### Lists
+
+[👾doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Lists.html)
+
+#### 1. `asList` 返回一个包含给定元素的不可变list
+
+#### 2. `cartesianProduct` 返回给定集合元素的笛卡尔积
+
+#### 3. `newArrayList` 创建一个可变的ArrayList实例
+
+#### 4. `newArrayListWithCapacity` 创建一个具有初始大小的ArrayList实例
+
+#### 5.`newArrayListWithExpectedSize` 创建一个具有期望容量大小的ArrayList实例
+
+#### 6.`newCopyOnWriteArrayList` 创建一个CopyOnWriteArrayList示例，CopyOnWriteArrayList适合读多写少的场景
+
+#### 7.`transform` 对给定的list进行一些转换操作，返回一个新的list
+
+#### 8.`reverse` 对给定的list进行反转元素操作，返回一个新的list
+
+#### 9.`partition` 对给定的list进行按照指定大小进行分区操作，返回一个新的list，包含多个子列表，每个子列表的大小相同
+
+### Sets
+
+[👾doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Sets.html)
+
+#### 1. `cartesianProduct`返回给定元素的笛卡尔积
+
+#### 2. `newConcurrentHashSet` 创建一个线程安全的hash map，支持初始化元素
+
+#### 3. `newCopyOnWriteArraySet` 创建一个CopyOnWriteArraySet的实例，支持初始化元素
+
+#### 4. `combinations` 返回一个给定集合元素和大小的子集
+
+#### 5. `difference` 返回两个给定集合的差集,以第一个集合为标杆
+
+#### 6. `intersection` 返回两个给定集合的交集
+
+#### 7. `union` 返回两个给定集合的并集
+
+### Maps
+
+[👾doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Maps.html)
+
+#### 1. `uniqueIndex`返回给定元素的笛卡尔积
+
+#### 2. `asMap` 创建一个map，支持一个简单Set和有序set以及NavigableSet
+
+#### 3. `transformValues` 对map中的values进行加工操作
+
+#### 4. `filterKeys` 对map中的key进行过滤
+
+### MultiMaps
+
+[👾doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Multimap.html)
+
+### BiMap
+
+[👾doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/BiMap.html)
+
+### Table
+
+[👾doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Table.html)
+
+### Range
+
+[👾doc](https://guava.dev/releases/snapshot-jre/api/docs/com/google/common/collect/Range.html)
+
+
+..... 

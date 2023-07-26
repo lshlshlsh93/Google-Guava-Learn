@@ -11,6 +11,7 @@
         <module name="guava-concurrency" />
         <module name="guava-eventbus" />
         <module name="guava-io" />
+        <module name="guava-collections" />
         <module name="guava-cache" />
       </profile>
     </annotationProcessing>

@@ -15,6 +15,7 @@
         <module>guava-io</module>
         <module>guava-eventbus</module>
         <module>guava-cache</module>
+        <module>guava-collections</module>
     </modules>
 
     <properties>
